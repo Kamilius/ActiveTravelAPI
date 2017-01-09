@@ -1,0 +1,120 @@
+{
+	"variables": [],
+	"info": {
+		"name": "ActiveTravelApi",
+		"_postman_id": "588ce53a-93b7-9473-8a32-82c076d0ff34",
+		"description": "",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "http://192.168.33.10:8080/api",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"",
+							"tests[\"API should be initialized\"] = jsonData.message === 'hooray! welcome to our api!';",
+							""
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://192.168.33.10:8080/api",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "http://192.168.33.10:8080/api/category",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"",
+							"tests[\"Status code is 400\"] = responseCode.code === 400;",
+							"tests[\"Should return error message 'No category name specified'\"] = jsonData.message === 'No category name specified';",
+							"    "
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://192.168.33.10:8080/api/category",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/x-www-form-urlencoded",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "name",
+							"value": "Test1",
+							"type": "text",
+							"enabled": false
+						}
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "http://192.168.33.10:8080/api/category",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"",
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"tests[\"Category should be created\"] = jsonData.message === 'Category created';",
+							""
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://192.168.33.10:8080/api/category",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/x-www-form-urlencoded",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "name",
+							"value": "Test1",
+							"type": "text",
+							"enabled": true
+						}
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		}
+	]
+}
