@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "start": "nodemon ./index.js localhost 8080",
     "test": ""
   },
   "author": "Oleksandr Hutsulyak",
@@ -12,5 +13,8 @@
     "body-parser": "^1.15.2",
     "express": "^4.14.0",
     "mongoose": "^4.7.6"
+  },
+  "devDependencies": {
+    "nodemon": "^1.11.0"
   }
 }

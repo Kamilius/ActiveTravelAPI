@@ -11,7 +11,7 @@ const app = express();                 // define our app using express
 
 const Category = require('./app/models/category');
 
-mongoose.connect('mongodb://travis_ci:travis_ci@ds145828.mlab.com:45828/active_travel'); // connect to our database
+mongoose.connect('mongodb://developer:dev123@ds145828.mlab.com:45828/active_travel'); // connect to our database
 
 // configure app to use bodyParser()
 // this will let us get the data from a POST
@@ -36,26 +36,41 @@ router.get('/', (req, res) => {
 app.use('/api', router);
 
 router.route('/category')
+  /**
+   * Create category with name
+   */
   .post((req, res) => {
-      if (!req.body.name) {
-        res.status(400).send({ message: 'No category name specified' });
+    if (!req.body.name || !req.body.name.trim().length) {
+      res.status(400).send({ message: 'No category name specified' });
 
-        return;
-      }
+      return;
+    }
 
-      const category = new Category();      // create a new instance of the Category model
+    const category = new Category();      // create a new instance of the Category model
 
-      category.name = req.body.name;  // set the category's name (comes from the request)
+    category.name = req.body.name;  // set the category's name (comes from the request)
 
-      // save the category and check for errors
-      category.save()
-        .then(() => {
-          res.json({ message: 'Category created' });
-        })
-        .catch((err) => {
-          res.send(err);
-        });
-    });
+    // save the category and check for errors
+    category.save()
+      .then(() => {
+        res.json({ message: 'Category created' });
+      })
+      .catch((err) => {
+        res.send(err);
+      });
+  })
+  /**
+   * Get all available categories
+   */
+  .get((req, res) => {
+    Category.find()
+      .then((categories) => {
+        res.json(categories);
+      })
+      .catch((err) => {
+        res.send(err);
+      });
+  });
 
 // START THE SERVER
 // =============================================================================
