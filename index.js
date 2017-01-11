@@ -75,10 +75,16 @@ router.route('/category/:id')
         res.send(err);
         return;
       }
-      console.log(category);
-      res.json(category);
+
+      if (category) {
+        res.json(category);
+        return;
+      }
+
+      res.json(`No category with id '${req.params.id}' found`);
     });
   })
+
   .put((req, res) => {
     if (!req.body.name || !req.body.name.trim().length) {
       res.status(400).send({ message: 'No category name specified' });
@@ -92,7 +98,7 @@ router.route('/category/:id')
 
         category.save()
           .then(() => {
-            res.json({ message: 'Category updated!' });
+            res.json({ message: 'Category updated' });
           })
           .catch((err) => {
             res.send(err);
@@ -101,6 +107,18 @@ router.route('/category/:id')
       .catch((err) => {
         res.send(err);
       });
+  })
+
+  .delete((req, res) => {
+    Category.remove({
+      _id: req.params.id
+    }, (err, category) => {
+      if (err) {
+        res.send(err);
+      }
+
+      res.json({ message: 'Category successfully deleted' });
+    });
   });
 
 // REGISTER OUR ROUTES -------------------------------
