@@ -31,10 +31,6 @@ router.get('/', (req, res) => {
 
 // more routes for our API will happen here
 
-// REGISTER OUR ROUTES -------------------------------
-// all of our routes will be prefixed with /api
-app.use('/api', router);
-
 router.route('/category')
   /**
    * Create category with name
@@ -71,6 +67,45 @@ router.route('/category')
         res.send(err);
       });
   });
+
+router.route('/category/:id')
+  .get((req, res) => {
+    Category.findById(req.params.id, (err, category) => {
+      if (err) {
+        res.send(err);
+        return;
+      }
+      console.log(category);
+      res.json(category);
+    });
+  })
+  .put((req, res) => {
+    if (!req.body.name || !req.body.name.trim().length) {
+      res.status(400).send({ message: 'No category name specified' });
+
+      return;
+    }
+
+    Category.findById(req.params.id)
+      .then((category) => {
+        category.name = req.body.name;
+
+        category.save()
+          .then(() => {
+            res.json({ message: 'Category updated!' });
+          })
+          .catch((err) => {
+            res.send(err);
+          });
+      })
+      .catch((err) => {
+        res.send(err);
+      });
+  });
+
+// REGISTER OUR ROUTES -------------------------------
+// all of our routes will be prefixed with /api
+app.use('/api', router);
 
 // START THE SERVER
 // =============================================================================
