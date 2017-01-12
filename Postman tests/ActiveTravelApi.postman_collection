@@ -8,7 +8,520 @@
 	},
 	"item": [
 		{
-			"name": "http://192.168.33.10:8080/api",
+			"name": "category/",
+			"description": "",
+			"item": [
+				{
+					"name": "Create category without name",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"",
+									"tests[\"Status code is 400\"] = responseCode.code === 400;",
+									"tests[\"Should return error message 'No category name specified'\"] = jsonData.message === 'No category name specified';",
+									"    "
+								]
+							}
+						}
+					],
+					"request": {
+						"url": "http://192.168.33.10:8080/api/category",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/x-www-form-urlencoded",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "name",
+									"value": "Test1",
+									"type": "text",
+									"enabled": false
+								}
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Get all categories",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"",
+									"tests[\"Should get array of all available categories\"] = jsonData instanceof Array;",
+									"",
+									"if (jsonData.length) {",
+									"    tests[\"Category should contain _id\"] = jsonData[0]._id && jsonData[0]._id.length;",
+									"    tests[\"Category should contain name\"] = jsonData[0].name && jsonData[0].name.length;",
+									"}"
+								]
+							}
+						}
+					],
+					"request": {
+						"url": "http://192.168.33.10:8080/api/category",
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Create category with name",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"",
+									"tests[\"Status code is 200\"] = responseCode.code === 200;",
+									"tests[\"Category should be created\"] = jsonData.message === 'Category created';",
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"url": "http://192.168.33.10:8080/api/category",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/x-www-form-urlencoded",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "name",
+									"value": "Test1",
+									"type": "text",
+									"enabled": true
+								}
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "service-category/",
+			"description": "",
+			"item": [
+				{
+					"name": "Create category with name",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"",
+									"tests[\"Status code is 200\"] = responseCode.code === 200;",
+									"tests[\"Category should be created\"] = jsonData.message === 'Service category created';",
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"url": "http://192.168.33.10:8080/api/service-category",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/x-www-form-urlencoded",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "name",
+									"value": "Test1",
+									"type": "text",
+									"enabled": true
+								}
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Create service category without name",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"",
+									"tests[\"Status code is 400\"] = responseCode.code === 400;",
+									"tests[\"Should return error message 'No service category name specified'\"] = jsonData.message === 'No service category name specified';",
+									"    "
+								]
+							}
+						}
+					],
+					"request": {
+						"url": "http://192.168.33.10:8080/api/service-category",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/x-www-form-urlencoded",
+								"description": ""
+							}
+						],
+						"body": {},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Get all categories",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"",
+									"tests[\"Should get array of all available service categories\"] = jsonData instanceof Array;",
+									"",
+									"tests[\"Category should contain _id\"] = jsonData[0]._id && jsonData[0]._id.length;",
+									"tests[\"Category should contain name\"] = jsonData[0].name && jsonData[0].name.length;",
+									"",
+									"postman.setEnvironmentVariable('serviceCategoryId', jsonData[0]._id);"
+								]
+							}
+						}
+					],
+					"request": {
+						"url": "http://192.168.33.10:8080/api/service-category",
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Update service category",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"",
+									"tests['Should successfully update service category'] = jsonData.message === 'Service category updated';"
+								]
+							}
+						}
+					],
+					"request": {
+						"url": "http://192.168.33.10:8080/api/service-category/{{serviceCategoryId}}",
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/x-www-form-urlencoded",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "name",
+									"value": "{{serviceCategoryName}}",
+									"type": "text",
+									"enabled": true
+								}
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Get category by Id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"",
+									"tests['Service category name should correspond to updated service category'] = jsonData.name === environment.serviceCategoryName;"
+								]
+							}
+						}
+					],
+					"request": {
+						"url": "http://192.168.33.10:8080/api/service-category/{{serviceCategoryId}}",
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Delete category",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"",
+									"tests['Service category should be deleted'] = jsonData.message === 'Service category deleted';"
+								]
+							}
+						}
+					],
+					"request": {
+						"url": "http://192.168.33.10:8080/api/service-category/{{serviceCategoryId}}",
+						"method": "DELETE",
+						"header": [],
+						"body": {},
+						"description": ""
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "uploaded-image/",
+			"description": "",
+			"item": [
+				{
+					"name": "Create image with base64 stirng",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"",
+									"tests[\"Status code is 200\"] = responseCode.code === 200;",
+									"tests[\"Image should be created\"] = jsonData.message === 'Image created';",
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"url": "http://192.168.33.10:8080/api/uploaded-image",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/x-www-form-urlencoded",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "base64",
+									"value": "Image",
+									"type": "text",
+									"enabled": true
+								}
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Create image without base64 string",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"",
+									"tests[\"Status code is 400\"] = responseCode.code === 400;",
+									"tests[\"Should return error message\"] = jsonData.message === 'No image base64 string specified';",
+									"    "
+								]
+							}
+						}
+					],
+					"request": {
+						"url": "http://192.168.33.10:8080/api/uploaded-image",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/x-www-form-urlencoded",
+								"description": ""
+							}
+						],
+						"body": {},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Get all categories",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"",
+									"tests[\"Should get array of all available images\"] = jsonData instanceof Array;",
+									"",
+									"tests[\"Image should contain _id\"] = jsonData[0]._id && jsonData[0]._id.length;",
+									"tests[\"Image should contain base64\"] = jsonData[0].base64 && jsonData[0].base64.length;",
+									"",
+									"postman.setEnvironmentVariable('imageId', jsonData[0]._id);"
+								]
+							}
+						}
+					],
+					"request": {
+						"url": "http://192.168.33.10:8080/api/uploaded-image",
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Update image",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"",
+									"tests['Should successfully update image'] = jsonData.message === 'Image updated';"
+								]
+							}
+						}
+					],
+					"request": {
+						"url": "http://192.168.33.10:8080/api/uploaded-image/{{imageId}}",
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/x-www-form-urlencoded",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "base64",
+									"value": "{{updatedImage}}",
+									"type": "text",
+									"enabled": true
+								}
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Get image by id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"",
+									"tests['Image base64 should correspond to updated image base64'] = jsonData.base64 === environment.updatedImage;"
+								]
+							}
+						}
+					],
+					"request": {
+						"url": "http://192.168.33.10:8080/api/uploaded-image/{{imageId}}",
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Delete category",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"",
+									"tests['Image should be deleted'] = jsonData.message === 'Image deleted';"
+								]
+							}
+						}
+					],
+					"request": {
+						"url": "http://192.168.33.10:8080/api/uploaded-image/{{imageId}}",
+						"method": "DELETE",
+						"header": [],
+						"body": {},
+						"description": ""
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "API Initialized",
 			"event": [
 				{
 					"listen": "test",
@@ -28,90 +541,6 @@
 				"method": "GET",
 				"header": [],
 				"body": {},
-				"description": ""
-			},
-			"response": []
-		},
-		{
-			"name": "http://192.168.33.10:8080/api/category",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"type": "text/javascript",
-						"exec": [
-							"var jsonData = JSON.parse(responseBody);",
-							"",
-							"tests[\"Status code is 400\"] = responseCode.code === 400;",
-							"tests[\"Should return error message 'No category name specified'\"] = jsonData.message === 'No category name specified';",
-							"    "
-						]
-					}
-				}
-			],
-			"request": {
-				"url": "http://192.168.33.10:8080/api/category",
-				"method": "POST",
-				"header": [
-					{
-						"key": "Content-Type",
-						"value": "application/x-www-form-urlencoded",
-						"description": ""
-					}
-				],
-				"body": {
-					"mode": "urlencoded",
-					"urlencoded": [
-						{
-							"key": "name",
-							"value": "Test1",
-							"type": "text",
-							"enabled": false
-						}
-					]
-				},
-				"description": ""
-			},
-			"response": []
-		},
-		{
-			"name": "http://192.168.33.10:8080/api/category",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"type": "text/javascript",
-						"exec": [
-							"var jsonData = JSON.parse(responseBody);",
-							"",
-							"tests[\"Status code is 200\"] = responseCode.code === 200;",
-							"tests[\"Category should be created\"] = jsonData.message === 'Category created';",
-							""
-						]
-					}
-				}
-			],
-			"request": {
-				"url": "http://192.168.33.10:8080/api/category",
-				"method": "POST",
-				"header": [
-					{
-						"key": "Content-Type",
-						"value": "application/x-www-form-urlencoded",
-						"description": ""
-					}
-				],
-				"body": {
-					"mode": "urlencoded",
-					"urlencoded": [
-						{
-							"key": "name",
-							"value": "Test1",
-							"type": "text",
-							"enabled": true
-						}
-					]
-				},
 				"description": ""
 			},
 			"response": []

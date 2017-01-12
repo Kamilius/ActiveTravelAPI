@@ -29,6 +29,7 @@ router.get('/', (req, res) => {
 
 require('./app/routes/category')(router);
 require('./app/routes/service-category')(router);
+require('./app/routes/uploaded-image')(router);
 
 // more routes for our API will happen here
 
