@@ -9,7 +9,7 @@ const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const app = express();                 // define our app using express
 
-mongoose.connect('mongodb://developer:dev123@ds145828.mlab.com:45828/active_travel'); // connect to our database
+mongoose.connect('mongodb://developer:travis_ci@travis_ci.mlab.com:45828/active_travel'); // connect to our database
 
 // configure app to use bodyParser()
 // this will let us get the data from a POST
@@ -30,6 +30,7 @@ router.get('/', (req, res) => {
 require('./app/routes/category')(router);
 require('./app/routes/service-category')(router);
 require('./app/routes/uploaded-image')(router);
+require('./app/routes/document')(router);
 
 // more routes for our API will happen here
 

@@ -19,7 +19,7 @@ module.exports = (router) => {
           return;
         }
 
-        let newDocName = `/uploads/${req.files.document.name}`
+        let newDocName = `/public/uploads/${req.files.document.name}`
         let newPath = `${__dirname}${newDocName}`;
         // Write uploaded document into new direction
         fs.writeFile(newPath, data, (err) => {
