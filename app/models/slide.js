@@ -2,7 +2,6 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const SlideSchema = new Schema({
-  _id: Number,
   event: {
     type: Schema.Types.ObjectId,
     ref: 'Event',

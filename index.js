@@ -9,8 +9,6 @@ const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const app = express();                 // define our app using express
 
-const Category = require('./app/models/category');
-
 mongoose.connect('mongodb://developer:dev123@ds145828.mlab.com:45828/active_travel'); // connect to our database
 
 // configure app to use bodyParser()
@@ -29,97 +27,10 @@ router.get('/', (req, res) => {
   res.json({ message: 'hooray! welcome to our api!' });
 });
 
+require('./app/routes/category')(router);
+require('./app/routes/service-category')(router);
+
 // more routes for our API will happen here
-
-router.route('/category')
-  /**
-   * Create category with name
-   */
-  .post((req, res) => {
-    if (!req.body.name || !req.body.name.trim().length) {
-      res.status(400).send({ message: 'No category name specified' });
-
-      return;
-    }
-
-    const category = new Category();      // create a new instance of the Category model
-
-    category.name = req.body.name;  // set the category's name (comes from the request)
-
-    // save the category and check for errors
-    category.save()
-      .then(() => {
-        res.json({ message: 'Category created' });
-      })
-      .catch((err) => {
-        res.send(err);
-      });
-  })
-  /**
-   * Get all available categories
-   */
-  .get((req, res) => {
-    Category.find()
-      .then((categories) => {
-        res.json(categories);
-      })
-      .catch((err) => {
-        res.send(err);
-      });
-  });
-
-router.route('/category/:id')
-  .get((req, res) => {
-    Category.findById(req.params.id, (err, category) => {
-      if (err) {
-        res.send(err);
-        return;
-      }
-
-      if (category) {
-        res.json(category);
-        return;
-      }
-
-      res.json(`No category with id '${req.params.id}' found`);
-    });
-  })
-
-  .put((req, res) => {
-    if (!req.body.name || !req.body.name.trim().length) {
-      res.status(400).send({ message: 'No category name specified' });
-
-      return;
-    }
-
-    Category.findById(req.params.id)
-      .then((category) => {
-        category.name = req.body.name;
-
-        category.save()
-          .then(() => {
-            res.json({ message: 'Category updated' });
-          })
-          .catch((err) => {
-            res.send(err);
-          });
-      })
-      .catch((err) => {
-        res.send(err);
-      });
-  })
-
-  .delete((req, res) => {
-    Category.remove({
-      _id: req.params.id
-    }, (err, category) => {
-      if (err) {
-        res.send(err);
-      }
-
-      res.json({ message: 'Category successfully deleted' });
-    });
-  });
 
 // REGISTER OUR ROUTES -------------------------------
 // all of our routes will be prefixed with /api
