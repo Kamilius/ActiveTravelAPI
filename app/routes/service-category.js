@@ -22,7 +22,6 @@ module.exports = (router) => {
           res.json({ message: 'Service category created' });
         })
         .catch((err) => {
-          console.log(err)
           res.send(err);
         });
     })

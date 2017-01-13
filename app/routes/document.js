@@ -1,49 +1,49 @@
+const multer = require('multer');
+const fs = require('fs');
+const storage = multer.diskStorage({
+  // uploaded files will go to public/uploads
+  destination: (req, file, cb) => {
+    cb(null, 'public/uploads');
+  },
+  // filename will be jsTimestamp.ext to avoid filenames collisions
+  filename: (req, file, cb) => {
+    cb(null, `${new Date().getTime()}${path.extname(file.originalname)}`);
+  }
+});
+const upload = multer({ storage });
+const path = require('path');
+
 const Document = require('../models/document');
 
 module.exports = (router) => {
+  router.use(upload.single('document'));
+
   router.route('/document')
     /**
      * Create document
      */
     .post((req, res) => {
-      if (!req.files.document) {
+      if (!req.file) {
         res.status(400).send({ message: 'No document files specified' });
 
         return;
       }
 
-      // Read uploaded document
-      fs.readFile(req.files.document.path, (err, data) => {
-        if (err) {
+      // Store available document entry in database
+      const doc = new Document();
+
+      doc.size = req.file.size;
+      doc.title = req.file.originalname;
+      doc.url = req.file.path.replace('public', '');
+
+      // save the doc and check for errors
+      doc.save()
+        .then((id) => {
+          res.json({ message: 'Document created', url: doc.url, id: doc._id });
+        })
+        .catch((err) => {
           res.send(err);
-          return;
-        }
-
-        let newDocName = `/public/uploads/${req.files.document.name}`
-        let newPath = `${__dirname}${newDocName}`;
-        // Write uploaded document into new direction
-        fs.writeFile(newPath, data, (err) => {
-          if (err) {
-            res.send(err);
-            return;
-          }
-          // Store available document entry in database
-          const doc = new Document();
-
-          doc.size = req.files.document.size;
-          doc.title = req.files.document.name;
-          doc.url = newDocName;
-
-          // save the doc and check for errors
-          doc.save()
-            .then(() => {
-              res.json({ message: 'Document created', url: doc.url });
-            })
-            .catch((err) => {
-              res.send(err);
-            });
         });
-      });
     })
     /**
      * Get all available documents
@@ -63,15 +63,28 @@ module.exports = (router) => {
      * Delete document
      */
     .delete((req, res) => {
-      Document.remove({
-        _id: req.params.id
-      }, (err, doc) => {
-        if (err) {
-          res.send(err);
-        }
+      // Remove file entry from db
+      Document.findById(req.params.id)
+        .then((doc) => {
+          const docUrl = doc.url;
 
-        res.json({ message: 'Document deleted' });
-      });
+          Document.remove({
+            _id: doc._id
+          }, (err) => {
+            if (err) {
+              res.send(err);
+              return;
+            }
+            // Remove file from disk
+            fs.unlink(`public${docUrl}`, (err) => {
+              if (err) {
+                res.send(err);
+                return;
+              }
+              res.json({ message: 'Document deleted' });
+            });
+          });
+        });
     });
 
   return router;
