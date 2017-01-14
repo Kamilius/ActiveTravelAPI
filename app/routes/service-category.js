@@ -6,12 +6,6 @@ module.exports = (router) => {
    * Create category with name
    */
     .post((req, res) => {
-      if (!req.body.name || !req.body.name.trim().length) {
-        res.status(400).send({ message: 'No service category name specified' });
-
-        return;
-      }
-
       const serviceCategory = new ServiceCategory();      // create a new instance of the ServiceCategory model
 
       serviceCategory.name = req.body.name;  // set the service category's name (comes from the request)

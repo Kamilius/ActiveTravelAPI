@@ -6,7 +6,7 @@ const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const app = express();
 
-mongoose.connect('mongodb://developer:dev123@ds145828.mlab.com:45828/active_travel'); // connect to database
+mongoose.connect('mongodb://localhost/ActiveTravel'); // connect to database
 
 // configure app to use bodyParser()
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -25,6 +25,7 @@ router.get('/', (req, res) => {
 
 require('./app/routes/category')(router);
 require('./app/routes/document')(router);
+require('./app/routes/event')(router);
 require('./app/routes/service-category')(router);
 require('./app/routes/uploaded-image')(router);
 

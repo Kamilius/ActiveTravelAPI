@@ -6,15 +6,9 @@ module.exports = (router) => {
    * Create category with name
    */
   .post((req, res) => {
-    if (!req.body.name || !req.body.name.trim().length) {
-      res.status(400).send({ message: 'No category name specified' });
+    const category = new Category();
 
-      return;
-    }
-
-    const category = new Category();      // create a new instance of the Category model
-
-    category.name = req.body.name;  // set the category's name (comes from the request)
+    category.name = req.body.name;
 
     // save the category and check for errors
     category.save()
@@ -22,7 +16,7 @@ module.exports = (router) => {
         res.json({ message: 'Category created' });
       })
       .catch((err) => {
-        res.send(err);
+        res.status(400).send(err);
       });
   })
   /**
@@ -94,7 +88,7 @@ router.route('/category/:id')
         res.send(err);
       }
 
-      res.json({ message: 'Category successfully deleted' });
+      res.json({ message: 'Category deleted' });
     });
   });
 

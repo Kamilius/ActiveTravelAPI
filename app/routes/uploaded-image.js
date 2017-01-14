@@ -6,12 +6,6 @@ module.exports = (router) => {
    * Create image encoded into base64 string
    */
   .post((req, res) => {
-    if (!req.body.base64 || !req.body.base64.length) {
-      res.status(400).send({ message: 'No image base64 string specified' });
-
-      return;
-    }
-
     const image = new UploadedImage(); // create a new instance of the UploadedImage model
 
     image.base64 = req.body.base64; // set the image's base64 (comes from the request)
@@ -22,7 +16,7 @@ module.exports = (router) => {
         res.json({ message: 'Image created' });
       })
       .catch((err) => {
-        res.send(err);
+        res.status(400).send(err);
       });
   })
   /**
