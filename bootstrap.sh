@@ -12,6 +12,11 @@ apt-get update >> /vagrant/provision.log 2>&1
 apt-get install -y mongodb-org=3.2.10 -q -y >> /vagrant/provision.log 2>&1
 echo -e "\n--- MongoDB version: `mongod --version` ---\n"
 
+# Setup and seed Mongodb database
 echo -e "\n--- Create local database 'ActiveTravel' ---\n"
 mongo ActiveTravel
-echo -e "\n--- Local database 'ActiveTravel' created. ---\n"
+echo -e "\n--- Seed local database 'ActiveTravel' ---\n"
+mongoimport --db ActiveTravel --collection categories --file /vagrant/seed/categories.json
+mongoimport --db ActiveTravel --collection servicecategories --file /vagrant/seed/servicecategories.json
+mongoimport --db ActiveTravel --collection events --file /vagrant/seed/events.json
+echo -e "\n--- Local database 'ActiveTravel' created and seeded. ---\n"

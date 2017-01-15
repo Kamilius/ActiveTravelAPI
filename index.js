@@ -9,8 +9,8 @@ const app = express();
 mongoose.connect('mongodb://localhost/ActiveTravel'); // connect to database
 
 // configure app to use bodyParser()
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(bodyParser.json());
+app.use(bodyParser.json({ limit: '10mb'  }));
+app.use(bodyParser.urlencoded({ limit: '10mb', extended: true }));
 
 const port = process.env.PORT || 8080;        // set our port
 
