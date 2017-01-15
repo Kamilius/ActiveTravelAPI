@@ -1,4 +1,5 @@
 const Event = require('../models/event');
+const checkAuthentication = require('../middleware/check-authentication');
 
 module.exports = (router) => {
   /**
@@ -21,7 +22,7 @@ module.exports = (router) => {
       }
     });
 
-    Event.create(events, (err, createdEvents) => {
+    Event.create(events, (err) => {
       if (err) {
         res.status(400).send(err);
       } else {
@@ -61,7 +62,7 @@ module.exports = (router) => {
     /**
      * Create event
      */
-    .post((req, res) => {
+    .post(checkAuthentication, (req, res) => {
       // If multiple start dates specified, create separate event for each date
       if (req.body.startDate instanceof Array) {
         saveMultipleEvents(req.body, res);

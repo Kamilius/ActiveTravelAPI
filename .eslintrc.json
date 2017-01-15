@@ -12,10 +12,12 @@
         },
         "sourceType": "module"
     },
-    "plugins": [
-        "react"
-    ],
+    // "plugins": [
+    //     "react"
+    // ],
     "rules": {
+        "comma-dangle": ["error", "always-multiline"],
+        "no-trailing-spaces": "error",
         "indent": ["error", 2],
         "no-const-assign": "warn",
         "no-this-before-super": "warn",
@@ -24,9 +26,6 @@
         "no-unused-vars": "warn",
         "constructor-super": "warn",
         "valid-typeof": "warn",
-        "semi": ["error", "never"],
-        "quotes": ["error", "single"],
-
-        "react/jsx-uses-vars": "error"
+        "quotes": ["error", "single"]
     }
 }

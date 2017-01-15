@@ -1,16 +1,23 @@
 // BASE SETUP
 // =============================================================================
-
 const express = require('express');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
+const morgan = require('morgan');
 const app = express();
 
-mongoose.connect('mongodb://localhost/ActiveTravel'); // connect to database
+const jwt = require('jsonwebtoken');
+const config = require('./app/config');
+
+mongoose.connect(config.database);
+app.set('superSecret', config.secret);
 
 // configure app to use bodyParser()
 app.use(bodyParser.json({ limit: '10mb'  }));
 app.use(bodyParser.urlencoded({ limit: '10mb', extended: true }));
+
+// log requests to the console
+app.use(morgan('dev'));
 
 const port = process.env.PORT || 8080;        // set our port
 
@@ -23,6 +30,7 @@ router.get('/', (req, res) => {
   res.json({ message: 'hooray! welcome to our api!' });
 });
 
+require('./app/routes/authenticate')(router, app);
 require('./app/routes/category')(router);
 require('./app/routes/document')(router);
 require('./app/routes/event')(router);

@@ -12,10 +12,12 @@
   "dependencies": {
     "body-parser": "^1.15.2",
     "express": "^4.14.0",
+    "jsonwebtoken": "^7.2.1",
     "mongoose": "^4.7.6",
     "multer": "^1.2.1"
   },
   "devDependencies": {
+    "morgan": "^1.7.0",
     "nodemon": "^1.11.0"
   }
 }

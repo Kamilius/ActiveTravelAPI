@@ -8,7 +8,7 @@ const storage = multer.diskStorage({
   // filename will be jsTimestamp.ext to avoid filenames collisions
   filename: (req, file, cb) => {
     cb(null, `${new Date().getTime()}${path.extname(file.originalname)}`);
-  }
+  },
 });
 const upload = multer({ storage });
 const path = require('path');
@@ -38,7 +38,7 @@ module.exports = (router) => {
 
       // save the doc and check for errors
       doc.save()
-        .then((id) => {
+        .then(() => {
           res.json({ message: 'Document created', url: doc.url, id: doc._id });
         })
         .catch((err) => {
@@ -69,7 +69,7 @@ module.exports = (router) => {
           const docUrl = doc.url;
 
           Document.remove({
-            _id: doc._id
+            _id: doc._id,
           }, (err) => {
             if (err) {
               res.send(err);
