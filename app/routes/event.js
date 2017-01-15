@@ -1,30 +1,74 @@
 const Event = require('../models/event');
 
 module.exports = (router) => {
+  /**
+   * Save separate event for each available startDate
+   * @param {Object} data - event data
+   * @param {Object} res  - response object for API communication
+   */
+  const saveMultipleEvents = (data, res) => {
+    let events = data.startDate.map((startDate) => {
+      return {
+        category: data.category,
+        dayAmount: data.dayAmount,
+        description: data.description,
+        image: data.image,
+        isHot: data.isHot,
+        location: data.location,
+        price: data.price,
+        startDate,
+        title: data.title,
+      }
+    });
+
+    Event.create(events, (err, createdEvents) => {
+      if (err) {
+        res.status(400).send(err);
+      } else {
+        res.json({ message: 'Events created' });
+      }
+    });
+  };
+
+  /**
+   * Save single event
+   * @param {Object} data - event data
+   * @param {Object} res  - response object for API communication
+   */
+  const saveSingleEvent = (data, res) => {
+    const event = new Event({
+      category: data.category,
+      dayAmount: data.dayAmount,
+      description: data.description,
+      image: data.image,
+      isHot: data.isHot,
+      location: data.location,
+      price: data.price,
+      startDate: data.startDate,
+      title: data.title,
+    });
+
+    event.save()
+      .then(() => {
+        res.json({ message: 'Event created' });
+      })
+      .catch((err) => {
+        res.status(400).send(err);
+      });
+  };
+
   router.route('/event')
     /**
      * Create event
      */
     .post((req, res) => {
-      const event = new Event({
-        category: req.body.category,
-        dayAmount: req.body.dayAmount,
-        description: req.body.description,
-        image: req.body.image,
-        isHot: req.body.isHot,
-        location: req.body.location,
-        price: req.body.price,
-        startDate: req.body.startDate,
-        title: req.body.title,
-      });
-
-      event.save()
-        .then(() => {
-          res.json({ message: 'Event created' });
-        })
-        .catch((err) => {
-          res.status(400).send(err);
-        });
+      // If multiple start dates specified, create separate event for each date
+      if (req.body.startDate instanceof Array) {
+        saveMultipleEvents(req.body, res);
+      // create single event
+      } else {
+        saveSingleEvent(req.body, res);
+      }
     });
   router.route('/events')
     /**
