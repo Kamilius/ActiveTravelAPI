@@ -36,7 +36,6 @@ module.exports = (router) => {
 
       if (req.query.hot) {
         query = { isHot: req.query.hot === 'true' };
-        console.log(query)
       }
 
       Event.find(query)
@@ -54,6 +53,7 @@ module.exports = (router) => {
      */
     .get((req, res) => {
       Event.findById(req.params.id)
+        .populate('category')
         .then((event) => {
           res.json(event);
         })

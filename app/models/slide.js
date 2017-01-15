@@ -5,8 +5,12 @@ const SlideSchema = new Schema({
   event: {
     type: Schema.Types.ObjectId,
     ref: 'Event',
+    required: true,
   },
-  fileName: String,
+  fileName: {
+    type: String,
+    required: true,
+  },
 });
 
 module.exports = mongoose.model('Slide', SlideSchema);
