@@ -1,11 +1,12 @@
 const Service = require('../models/service');
+const checkAuthentication = require('../middleware/check-authentication');
 
 module.exports = (router) => {
   router.route('/service')
     /**
      * Create service
      */
-    .post((req, res) => {
+    .post(checkAuthentication, (req, res) => {
       const service = new Service({
         capacity: req.body.capacity,
         description: req.body.description,
@@ -55,7 +56,7 @@ module.exports = (router) => {
     /**
      * Update service
      */
-    .put((req, res) => {
+    .put(checkAuthentication, (req, res) => {
       Service.findById(req.params.id)
         .then((service) => {
           service.capacity = req.body.capacity;
@@ -78,7 +79,7 @@ module.exports = (router) => {
     /**
      * Delete service
      */
-    .delete((req, res) => {
+    .delete(checkAuthentication, (req, res) => {
       Service.findByIdAndRemove(req.params.id)
         .then(() => {
           res.json({ message: 'Service removed' });

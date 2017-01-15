@@ -12,6 +12,7 @@ const storage = multer.diskStorage({
 });
 const upload = multer({ storage });
 const path = require('path');
+const checkAuthentication = require('../middleware/check-authentication');
 
 const Document = require('../models/document');
 
@@ -22,7 +23,7 @@ module.exports = (router) => {
     /**
      * Create document
      */
-    .post((req, res) => {
+    .post(checkAuthentication, (req, res) => {
       if (!req.file) {
         res.status(400).send({ message: 'No document files specified' });
 
@@ -62,7 +63,7 @@ module.exports = (router) => {
     /**
      * Delete document
      */
-    .delete((req, res) => {
+    .delete(checkAuthentication, (req, res) => {
       // Remove file entry from db
       Document.findById(req.params.id)
         .then((doc) => {

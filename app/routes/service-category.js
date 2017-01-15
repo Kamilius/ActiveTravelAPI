@@ -1,11 +1,12 @@
 const ServiceCategory = require('../models/service-category');
+const checkAuthentication = require('../middleware/check-authentication');
 
 module.exports = (router) => {
   router.route('/service-category')
   /**
    * Create category with name
    */
-    .post((req, res) => {
+    .post(checkAuthentication, (req, res) => {
       const serviceCategory = new ServiceCategory();      // create a new instance of the ServiceCategory model
 
       serviceCategory.name = req.body.name;  // set the service category's name (comes from the request)
@@ -54,7 +55,7 @@ module.exports = (router) => {
     /**
      * Update category's name
      */
-    .put((req, res) => {
+    .put(checkAuthentication, (req, res) => {
       if (!req.body.name || !req.body.name.trim().length) {
         res.status(400).send({ message: 'No service category name specified' });
 
@@ -80,10 +81,10 @@ module.exports = (router) => {
     /**
      * Delete category
      */
-    .delete((req, res) => {
+    .delete(checkAuthentication, (req, res) => {
       ServiceCategory.remove({
-        _id: req.params.id
-      }, (err, category) => {
+        _id: req.params.id,
+      }, (err) => {
         if (err) {
           res.send(err);
         }

@@ -109,7 +109,7 @@ module.exports = (router) => {
     /**
      * Update event
      */
-    .put((req, res) => {
+    .put(checkAuthentication, (req, res) => {
       Event.findById(req.params.id)
         .then((event) => {
           event.category = req.body.category;
@@ -134,7 +134,7 @@ module.exports = (router) => {
     /**
      * Delete event
      */
-    .delete((req, res) => {
+    .delete(checkAuthentication, (req, res) => {
       Event.findByIdAndRemove(req.params.id)
         .then(() => {
           res.json({ message: 'Event removed' });

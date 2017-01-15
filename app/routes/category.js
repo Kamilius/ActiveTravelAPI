@@ -1,11 +1,12 @@
 const Category = require('../models/category');
+const checkAuthentication = require('../middleware/check-authentication');
 
 module.exports = (router) => {
   router.route('/category')
     /**
      * Create category with name
      */
-    .post((req, res) => {
+    .post(checkAuthentication, (req, res) => {
       const category = new Category();
 
       category.name = req.body.name;
@@ -48,7 +49,7 @@ module.exports = (router) => {
     /**
      * Update category
      */
-    .put((req, res) => {
+    .put(checkAuthentication, (req, res) => {
       Category.findById(req.params.id)
         .then((category) => {
           category.name = req.body.name;
@@ -68,7 +69,7 @@ module.exports = (router) => {
     /**
      * Delete category
      */
-    .delete((req, res) => {
+    .delete(checkAuthentication, (req, res) => {
       Category.findByIdAndRemove(req.params.id)
         .then(() => {
           res.json({ message: 'Category deleted' });
