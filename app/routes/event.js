@@ -2,7 +2,9 @@ const Event = require('../models/event');
 
 module.exports = (router) => {
   router.route('/event')
-    // Create event
+    /**
+     * Create event
+     */
     .post((req, res) => {
       const event = new Event({
         category: req.body.category,
@@ -25,8 +27,10 @@ module.exports = (router) => {
         });
     });
   router.route('/events')
-    // Get all events
-    // Can receive parameters "hot" to search by "isHot" property
+    /**
+     * Get all events
+     * Can receive parameters "hot" to search by "isHot" property
+     */
     .get((req, res) => {
       let query;
 
@@ -39,6 +43,56 @@ module.exports = (router) => {
         .populate('category')
         .then((events) => {
           res.json(events);
+        })
+        .catch((err) => {
+          res.status(400).send(err);
+        });
+    })
+  router.route('/event/:id')
+    /**
+     * Get event by id
+     */
+    .get((req, res) => {
+      Event.findById(req.params.id)
+        .then((event) => {
+          res.json(event);
+        })
+        .catch((err) => {
+          res.status(400).send(err);
+        });
+    })
+    /**
+     * Update event
+     */
+    .put((req, res) => {
+      Event.findById(req.params.id)
+        .then((event) => {
+          event.category = req.body.category;
+          event.dayAmount = req.body.dayAmount;
+          event.description = req.body.description;
+          event.image = req.body.image;
+          event.isHot = req.body.isHot;
+          event.location = req.body.location;
+          event.price = req.body.price;
+          event.startDate = req.body.startDate;
+          event.title = req.body.title;
+
+          event.save()
+            .then(() => {
+              res.json({ message: 'Event updated' });
+            })
+            .catch((err) => {
+              res.status(400).send(err);
+            });
+        })
+    })
+    /**
+     * Delete event
+     */
+    .delete((req, res) => {
+      Event.findByIdAndRemove(req.params.id)
+        .then(() => {
+          res.json({ message: 'Event removed' });
         })
         .catch((err) => {
           res.status(400).send(err);

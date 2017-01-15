@@ -37,30 +37,18 @@ router.route('/category/:id')
    * Get category by id
    */
   .get((req, res) => {
-    Category.findById(req.params.id, (err, category) => {
-      if (err) {
-        res.send(err);
-        return;
-      }
-
-      if (category) {
+    Category.findById(req.params.id)
+      .then((category) => {
         res.json(category);
-        return;
-      }
-
-      res.json(`No category with id '${req.params.id}' found`);
-    });
+      })
+      .catch((err) => {
+        res.send(err);
+      })
   })
   /**
-   * Update category's name
+   * Update category
    */
   .put((req, res) => {
-    if (!req.body.name || !req.body.name.trim().length) {
-      res.status(400).send({ message: 'No category name specified' });
-
-      return;
-    }
-
     Category.findById(req.params.id)
       .then((category) => {
         category.name = req.body.name;
@@ -81,15 +69,13 @@ router.route('/category/:id')
    * Delete category
    */
   .delete((req, res) => {
-    Category.remove({
-      _id: req.params.id
-    }, (err, category) => {
-      if (err) {
+    Category.findByIdAndRemove(req.params.id)
+      .then((category) => {
+        res.json({ message: 'Category deleted' });
+      })
+      .catch((err) => {
         res.send(err);
-      }
-
-      res.json({ message: 'Category deleted' });
-    });
+      });
   });
 
   return router;
