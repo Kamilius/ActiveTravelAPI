@@ -7,7 +7,10 @@ const storage = multer.diskStorage({
   },
   // filename will be jsTimestamp.ext to avoid filenames collisions
   filename: (req, file, cb) => {
-    cb(null, `${new Date().getTime()}${path.extname(file.originalname)}`);
+    const fileExtension = path.extname(file.originalname);
+    const fileName = file.originalname.replace(fileExtension, '');
+
+    cb(null, `${fileName}-${new Date().getTime()}${fileExtension}`);
   },
 });
 const upload = multer({ storage });

@@ -7,8 +7,9 @@ const SlideSchema = new Schema({
     ref: 'Event',
     required: true,
   },
-  fileName: {
-    type: String,
+  file: {
+    type: Schema.Types.ObjectId,
+    ref: 'Document',
     required: true,
   },
 });

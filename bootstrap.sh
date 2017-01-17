@@ -16,7 +16,12 @@ echo -e "\n--- MongoDB version: `mongod --version` ---\n"
 echo -e "\n--- Create local database 'ActiveTravel' ---\n"
 mongo ActiveTravel
 echo -e "\n--- Seed local database 'ActiveTravel' ---\n"
+echo -e "\n--- Seed categories collection ---\n"
 mongoimport --db ActiveTravel --collection categories --file /vagrant/seed/categories.json
+echo -e "\n--- Seed servicecategories collection ---\n"
 mongoimport --db ActiveTravel --collection servicecategories --file /vagrant/seed/servicecategories.json
+echo -e "\n--- Seed events collection ---\n"
 mongoimport --db ActiveTravel --collection events --file /vagrant/seed/events.json
+echo -e "\n--- Seed services collection ---\n"
+mongoimport --db ActiveTravel --collection services --file /vagrant/seed/services.json
 echo -e "\n--- Local database 'ActiveTravel' created and seeded. ---\n"
