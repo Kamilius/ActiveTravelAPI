@@ -24,4 +24,11 @@ echo -e "\n--- Seed events collection ---\n"
 mongoimport --db ActiveTravel --collection events --file /vagrant/seed/events.json
 echo -e "\n--- Seed services collection ---\n"
 mongoimport --db ActiveTravel --collection services --file /vagrant/seed/services.json
+echo -e "\n--- Seed users collection ---\n"
+mongoimport --db ActiveTravel --collection users --file /vagrant/seed/users.json
 echo -e "\n--- Local database 'ActiveTravel' created and seeded. ---\n"
+
+# Needed for storing/reading encrypted passwords
+echo -e "\n--- Installing GCC and global node-gyp ---\n"
+sudo apt-get install build-essential -Y >> /vagrant/provision.log 2>&1
+npm install -g node-gyp >> /vagrant/provision.log 2>&1

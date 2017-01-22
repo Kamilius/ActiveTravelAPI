@@ -1,15 +1,12 @@
-const express = require('express');
-const app = express();
 const jwt = require('jsonwebtoken');
 
 module.exports = (req, res, next) => {
   // check header or url parameters or post parameters for token
   const token = req.body.token || req.query.token || req.headers['x-access-token'];
-
   // decode token
   if (token) {
     // verifies secret and checks exp
-    jwt.verify(token, app.get('superSecret'), (err, decoded) => {
+    jwt.verify(token, req.app.get('superSecret'), (err, decoded) => {
       if (err) {
         return res.status(403).json({ message: 'Failed to authenticate token.' });
       } else {
