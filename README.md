@@ -15,5 +15,11 @@
 - launch application: `$ npm start`
 - after launch application will be available from host machine by http://127.0.0.1:5656/api
 
+## To run endpoints tests
+- Install Postman (one of two):
+ - Standalone application: https://www.getpostman.com/
+ - Chrome extension: https://chrome.google.com/webstore/detail/postman/fhbjgbiflinjbdggehcddcbncdddomop
+- Import tests from `postman_tests` directory into application
+
 ## Available npm scripts
 - `$ npm start` - launches application with file change watcher.
